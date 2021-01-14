@@ -4852,6 +4852,16 @@ vm_opt_mod(VALUE recv, VALUE obj)
 }
 
 static VALUE
+vm_opt_mod2147483647(VALUE recv)
+{
+    if (FIXNUM_P(recv) &&
+    BASIC_OP_UNREDEFINED_P(BOP_MOD, INTEGER_REDEFINED_OP_FLAG)) {
+        return rb_fix_mod_2147483647(recv);
+    }
+    return vm_opt_mod(recv, INT2FIX(2147483647));
+}
+
+static VALUE
 vm_opt_neq(const rb_iseq_t *iseq, CALL_DATA cd, CALL_DATA cd_eq, VALUE recv, VALUE obj)
 {
     if (vm_method_cfunc_is(iseq, cd, recv, rb_obj_not_equal)) {

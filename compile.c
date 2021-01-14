@@ -3454,7 +3454,18 @@ iseq_specialized_instruction(rb_iseq_t *iseq, INSN *iobj)
 		  case idMINUS:	 SP_INSN(minus);  return COMPILE_OK;
 		  case idMULT:	 SP_INSN(mult);	  return COMPILE_OK;
 		  case idDIV:	 SP_INSN(div);	  return COMPILE_OK;
-		  case idMOD:	 SP_INSN(mod);	  return COMPILE_OK;
+		  case idMOD:
+          {
+          LINK_ELEMENT *prev = get_prev_insn(iobj);
+          if(IS_INSN(prev) && IS_INSN_ID((INSN*)prev, putobject)) {
+            VALUE y = OPERAND_AT((INSN*)prev, 0);
+            if(FIXNUM_P(y) && FIX2INT(y) == 2147483647) {
+                SP_INSN(mod2147483647);
+                return COMPILE_OK;
+            }
+          }
+          SP_INSN(mod);
+            return COMPILE_OK; }
 		  case idEq:	 SP_INSN(eq);	  return COMPILE_OK;
 		  case idNeq:	 SP_INSN(neq);	  return COMPILE_OK;
 		  case idEqTilde:SP_INSN(regexpmatch2);return COMPILE_OK;

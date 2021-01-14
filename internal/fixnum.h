@@ -32,6 +32,7 @@ static inline VALUE rb_fix_mul_fix(VALUE x, VALUE y);
 static inline void rb_fix_divmod_fix(VALUE x, VALUE y, VALUE *divp, VALUE *modp);
 static inline VALUE rb_fix_div_fix(VALUE x, VALUE y);
 static inline VALUE rb_fix_mod_fix(VALUE x, VALUE y);
+static inline VALUE rb_fix_mod_2147483647(VALUE x);
 static inline bool FIXNUM_POSITIVE_P(VALUE num);
 static inline bool FIXNUM_NEGATIVE_P(VALUE num);
 static inline bool FIXNUM_ZERO_P(VALUE num);
@@ -163,6 +164,17 @@ rb_fix_mod_fix(VALUE x, VALUE y)
     VALUE mod;
     rb_fix_divmod_fix(x, y, NULL, &mod);
     return mod;
+}
+
+static inline VALUE
+rb_fix_mod_2147483647(VALUE a)
+{
+    long x = FIX2LONG(a);
+    long mod = x % 2147483647;
+    if (mod < 0) {
+        mod += 2147483647;
+    }
+    return LONG2FIX(mod);
 }
 
 static inline bool

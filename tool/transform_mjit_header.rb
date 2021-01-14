@@ -49,6 +49,7 @@ module MJITHeader
     'vm_opt_mult',
     'vm_opt_div',
     'vm_opt_mod',
+    'vm_opt_mod2147483647',
     'vm_opt_neq',
     'vm_opt_lt',
     'vm_opt_le',
